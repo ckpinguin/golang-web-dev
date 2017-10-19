@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	tpl, err := template.ParseFiles("one.gmao") // first call on library object
+	tpl, err := template.ParseFiles("004_parse_execute/03_ParseFiles/one.gmao") // first call on library object
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -17,7 +17,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	tpl, err = tpl.ParseFiles("two.gmao", "vespa.gmao") // subsequent calls on own tpl object
+	tpl, err = tpl.ParseFiles("004_parse_execute/03_ParseFiles/two.gmao", "004_parse_execute/03_ParseFiles/vespa.gmao") // subsequent calls on own tpl object (aka method)
 	if err != nil {
 		log.Fatalln(err)
 	}

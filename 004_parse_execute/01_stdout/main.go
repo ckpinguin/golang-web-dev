@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	tpl, err := template.ParseFiles("tpl.gohtml")
+	tpl, err := template.ParseFiles("004_parse_execute/01_stdout/tpl.gohtml")
 	if err != nil {
 		log.Fatalln(err)
 	}
