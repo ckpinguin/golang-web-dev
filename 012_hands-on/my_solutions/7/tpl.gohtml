@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    {{range .}}
+        <h1>{{.Name}}</h1>
+        {{range .Menu}}
+            <h2>{{.Type}}: {{.Name}}</h2>
+            For only {{.Price}}<br>
+            Containing:<br />
+            <ul>
+            {{range .Items}}
+                <li>{{.Name}}</li>
+            {{end}}
+            </ul>
+        {{end}}
+    {{end}}
+</body>
+</html>
