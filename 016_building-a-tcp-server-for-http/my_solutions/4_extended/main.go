@@ -178,7 +178,6 @@ func apply(conn net.Conn) {
 }
 
 func doApply(conn net.Conn, values string) {
-	fmt.Println("doApply!")
 	body := `<!DOCTYPE html><html lang="en"><head><meta charet="UTF-8"><title></title></head><body>
 	<h1>APPLICATION DONE!</h1>
 	<h2>Thank you for subscribing to our spam newsletters</h2>
