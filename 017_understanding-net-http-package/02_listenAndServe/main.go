@@ -13,5 +13,7 @@ func (m hotdog) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	var d hotdog
+	// check for interface implementation
+	var _ http.Handler = (*hotdog)(nil)
 	http.ListenAndServe(":8080", d)
 }
