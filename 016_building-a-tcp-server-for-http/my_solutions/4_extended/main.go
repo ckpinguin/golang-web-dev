@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
 	"log"
 	"net"
@@ -33,24 +34,58 @@ func handle(conn net.Conn) {
 func request(conn net.Conn) {
 	i := 0
 	scanner := bufio.NewScanner(conn)
+	// var reqLine string
+	var method string
+	var uri string
+	var bodyBuf bytes.Buffer
+	// some flags (not clever I am)
+	inHeader := false
+	inBody := false
+	var ln string
 	for scanner.Scan() {
-		ln := scanner.Text()
+		ln = scanner.Text()
+		// fmt.Println(ln)
+
 		if i == 0 { // first line is the request
-			mux(conn, ln)
+			// reqLine = ln
+			method = strings.Fields(ln)[0]
+			uri = strings.Fields(ln)[1]
+			inHeader = true
+			inBody = false
 			// A full http server would handle the rest of the
 			// header here, before actually muxing
 		}
-		if ln == "" { // empty line means end of headers
-			break
+		if inHeader {
+			if ln == "" && method == "GET" {
+				fmt.Println("in GET end of headers,", i, "headers received") // empty line means end of headers
+				break
+			} else if ln == "" && method == "POST" {
+				fmt.Println("in POST end of headers, beginning of body", i, "headers received")
+				inHeader = false
+				inBody = true
+				i++
+				continue
+			}
+		}
+		if inBody {
+			fmt.Println("we are in body")
+			if ln == "" {
+				fmt.Println("in POST end of body")
+				inBody = false
+				break
+			}
+			bodyBuf.WriteString(ln)
+			bodyBuf.WriteString("\r\n")
+			fmt.Println("body is:", bodyBuf.String())
 		}
 		i++
+		// fmt.Println("line no:", i)
 	}
+	fmt.Println("now responding via mux...method:", method, "URI:", uri, "body:", bodyBuf.String())
+	mux(conn, method, uri, bodyBuf.String())
 }
 
-func mux(conn net.Conn, ln string) {
-	method := strings.Fields(ln)[0]
-	uri := strings.Fields(ln)[1]
-
+func mux(conn net.Conn, method string, uri string, body string) {
 	// multiplexer
 	if method == "GET" && uri == "/" {
 		index(conn)
@@ -65,7 +100,7 @@ func mux(conn net.Conn, ln string) {
 		apply(conn)
 	}
 	if method == "POST" && uri == "/apply" {
-		doApply(conn)
+		doApply(conn, body)
 	}
 }
 
@@ -130,8 +165,8 @@ func apply(conn net.Conn) {
 		<li><a href="/apply">Apply</a></li>
 	</ul>
 	<form action="/apply" method="post">
-		<input type="text" name="Username" placeholder="Your username" id="user_name">
-		<input type="password" name="Password" id="user_pw">
+		<input type="text" name="username" placeholder="Your username" id="user_name">
+		<input type="password" name="password" id="user_pw">
 		<button type="submit">Submit</button>
 	</form>
 	</body></html>`
@@ -142,10 +177,12 @@ func apply(conn net.Conn) {
 	fmt.Fprint(conn, body)
 }
 
-func doApply(conn net.Conn) {
+func doApply(conn net.Conn, values string) {
+	fmt.Println("doApply!")
 	body := `<!DOCTYPE html><html lang="en"><head><meta charet="UTF-8"><title></title></head><body>
 	<h1>APPLICATION DONE!</h1>
 	<h2>Thank you for subscribing to our spam newsletters</h2>
+	<h3>Mr. ` + values + `</h3>
 	<ul>
 		<li><a href="/">Index</a></li>
 		<li><a href="/about">About</a></li>
