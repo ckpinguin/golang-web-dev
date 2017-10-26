@@ -54,7 +54,7 @@ Patterns may optionally begin with a host name, restricting matches to URLs on t
 
 ServeMux also takes care of sanitizing the URL request path, redirecting any request containing . or .. elements or repeated slashes to an equivalent, cleaner URL.
 
-*** 
+***
 
 # ServeMux
 

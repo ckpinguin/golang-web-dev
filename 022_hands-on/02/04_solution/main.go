@@ -26,6 +26,9 @@ func main() {
 		for scanner.Scan() {
 			ln := scanner.Text()
 			fmt.Println(ln)
+			if ln == "END" {
+				break
+			}
 		}
 		defer conn.Close()
 
