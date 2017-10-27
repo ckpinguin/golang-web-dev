@@ -6,5 +6,6 @@ import (
 )
 
 func main() {
+	// log.Println(http.Dir("."))
 	log.Fatal(http.ListenAndServe(":8080", http.FileServer(http.Dir("."))))
 }
