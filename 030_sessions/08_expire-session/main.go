@@ -23,7 +23,7 @@ type session struct {
 
 var tpl *template.Template
 var dbUsers = map[string]user{}       // user ID, user
-var dbSessions = map[string]session{} // session ID, session
+var dbSessions = map[string]session{} // session ID (UUID), session
 var dbSessionsCleaned time.Time
 
 const sessionLength int = 30
