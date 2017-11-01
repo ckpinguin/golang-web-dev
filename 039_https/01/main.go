@@ -1,12 +1,13 @@
 package main
 
 import (
+	"log"
 	"net/http"
 )
 
 func main() {
 	http.HandleFunc("/", foo)
-	http.ListenAndServeTLS(":10443", "cert.pem", "key.pem", nil)
+	log.Fatalln(http.ListenAndServeTLS(":10443", "cert.pem", "key.pem", nil))
 }
 
 func foo(w http.ResponseWriter, req *http.Request) {
