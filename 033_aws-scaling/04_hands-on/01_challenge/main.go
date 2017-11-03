@@ -37,7 +37,7 @@ func checkdb(w http.ResponseWriter, req *http.Request) {
 	inst := getInstance()
 	io.WriteString(w, string(inst))
 
-	rows, err := db.Query(`SELECT * from amigos;`)
+	rows, err := db.Query(`SELECT aName from amigos;`)
 	check(err)
 	defer rows.Close()
 
