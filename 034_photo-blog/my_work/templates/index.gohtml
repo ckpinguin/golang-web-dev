@@ -6,7 +6,17 @@
 </head>
 <body>
 
-Hello from index
 
+<h1>Photo blog</h1>
+<h1>Your Pictures:</h1>
+{{range .}}
+<p>Getting {{.}}</p>
+<img src="/public/pics/{{.}}" width="400px">
+{{end}}
+<form method="POST" enctype="multipart/form-data" action="index.html">
+    <label for="idx_file">Upload picture:</label>
+    <input type="file" name="file" id="idx_file">
+    <button type="submit">Upload!</button>
+</form>
 </body>
 </html>
