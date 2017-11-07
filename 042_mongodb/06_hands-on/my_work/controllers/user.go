@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/ckpinguin/golang-web-dev/042_mongodb/06_hands-on/my_work/models"
@@ -43,7 +44,10 @@ func (uc UserController) CreateUser(w http.ResponseWriter, r *http.Request, _ ht
 	// store the user in mongodb
 	uc.session[u.ID] = u
 
-	uj, _ := json.Marshal(u)
+	uj, err := json.Marshal(u)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated) // 201
