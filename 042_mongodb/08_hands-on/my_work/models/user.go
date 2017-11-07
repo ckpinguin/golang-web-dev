@@ -2,7 +2,6 @@ package models
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"log"
 	"os"
 )
@@ -24,22 +23,19 @@ func StoreUsers(m map[string]User) {
 		log.Fatalln(err.Error())
 	}
 	defer f.Close()
+	log.Println("Saving:", m)
 	json.NewEncoder(f).Encode(m)
 }
 
 func LoadUsers() map[string]User {
-	var jd Users
 	data := make(map[string]User)
 
-	f, err := ioutil.ReadFile("./users.json")
+	f, err := os.Open("./users.json")
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
-	json.Unmarshal(f, &jd)
-	for _, u := range jd {
-		log.Println(u)
-		data[u.ID] = u
-	}
+	defer f.Close()
+	json.NewDecoder(f).Decode(&data)
 	log.Println("Loaded data:", data)
 	return data
 }
