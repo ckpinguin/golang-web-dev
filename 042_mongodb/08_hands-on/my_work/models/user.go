@@ -24,11 +24,7 @@ func StoreUsers(m map[string]User) {
 		log.Fatalln(err.Error())
 	}
 	defer f.Close()
-	jm, err := json.Marshal(m)
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-	f.Write(jm)
+	json.NewEncoder(f).Encode(m)
 }
 
 func LoadUsers() map[string]User {
