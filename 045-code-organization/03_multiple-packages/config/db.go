@@ -3,10 +3,11 @@ package config
 import (
 	"database/sql"
 	"fmt"
+
 	_ "github.com/lib/pq"
 )
 
-var DB *sql.DB
+var DB *sql.DB // package scope is not global scope!
 
 func init() {
 	var err error
