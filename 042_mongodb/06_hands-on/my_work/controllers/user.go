@@ -8,7 +8,6 @@ import (
 	"github.com/ckpinguin/golang-web-dev/042_mongodb/06_hands-on/my_work/models"
 	"github.com/julienschmidt/httprouter"
 	"github.com/satori/go.uuid"
-	"gopkg.in/mgo.v2/bson"
 )
 
 type UserController struct {
@@ -23,7 +22,6 @@ func (uc UserController) GetUser(w http.ResponseWriter, r *http.Request, p httpr
 	// Grab id
 	id := p.ByName("id")
 
-	// Verify id is ObjectId hex representation, otherwise return status not found
 	if u, ok := uc.session[id]; ok {
 		// Marshal provided interface into JSON structure
 		uj, _ := json.Marshal(u)
@@ -55,19 +53,14 @@ func (uc UserController) CreateUser(w http.ResponseWriter, r *http.Request, _ ht
 func (uc UserController) DeleteUser(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	id := p.ByName("id")
 
-	if !bson.IsObjectIdHex(id) {
-		w.WriteHeader(404)
+	if _, ok := uc.session[id]; ok {
+		// Delete user
+		delete(uc.session, id)
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK) // 200
+		fmt.Fprint(w, "Deleted user", id, "\n")
 		return
 	}
-
-	oid := bson.ObjectIdHex(id)
-
-	// Delete user
-	if err := uc.session.DB("go-web-dev-db").C("users").RemoveId(oid); err != nil {
-		w.WriteHeader(404)
-		return
-	}
-
-	w.WriteHeader(http.StatusOK) // 200
-	fmt.Fprint(w, "Deleted user", oid, "\n")
+	w.WriteHeader(http.StatusNotFound) // 404
+	return
 }
