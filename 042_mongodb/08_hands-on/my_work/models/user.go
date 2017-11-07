@@ -7,4 +7,6 @@ type User struct {
 	Age    int    `json:"Age"`
 }
 
+type Users []User
+
 // Id was of type string before
