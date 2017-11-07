@@ -3,11 +3,10 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/GoesToEleven/golang-web-dev/040_mongodb/06_hands-on/starting-code/models"
-	"github.com/julienschmidt/httprouter"
-	"gopkg.in/mgo.v2"
-	"gopkg.in/mgo.v2/bson"
 	"net/http"
+
+	"github.com/ckpinguin/golang-web-dev/040_mongodb/06_hands-on/my_work/models"
+	"github.com/julienschmidt/httprouter"
 )
 
 type UserController struct {
