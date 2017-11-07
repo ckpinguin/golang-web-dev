@@ -15,8 +15,8 @@ type UserController struct {
 	session map[string]models.User
 }
 
-func NewUserController() *UserController {
-	return &UserController{}
+func NewUserController(m map[string]models.User) *UserController {
+	return &UserController{m}
 }
 
 func (uc UserController) GetUser(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
