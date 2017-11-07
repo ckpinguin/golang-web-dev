@@ -19,5 +19,5 @@ func main() {
 }
 
 func getSession() map[string]models.User {
-	return models.loadUsers()
+	return models.LoadUsers()
 }

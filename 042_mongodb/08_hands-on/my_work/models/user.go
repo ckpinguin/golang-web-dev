@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"log"
+	"os"
 )
 
 type User struct {
@@ -18,7 +19,16 @@ type Users []User
 // Id was of type string before
 
 func StoreUsers(m map[string]User) {
-	log.Println("Trying to save:", m)
+	f, err := os.Create("./users.json")
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	defer f.Close()
+	jm, err := json.Marshal(m)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	f.Write(jm)
 }
 
 func LoadUsers() map[string]User {
@@ -29,9 +39,7 @@ func LoadUsers() map[string]User {
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
-	// log.Println("Loaded:", string(f))
 	json.Unmarshal(f, &jd)
-	// log.Println("jd:", jd)
 	for _, u := range jd {
 		log.Println(u)
 		data[u.ID] = u
