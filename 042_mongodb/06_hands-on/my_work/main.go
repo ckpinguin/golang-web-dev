@@ -3,8 +3,8 @@ package main
 import (
 	"net/http"
 
-	"github.com/ckpinguin/golang-web-dev/042_mongodb/02_json/models"
 	"github.com/ckpinguin/golang-web-dev/042_mongodb/06_hands-on/my_work/controllers"
+	"github.com/ckpinguin/golang-web-dev/042_mongodb/06_hands-on/my_work/models"
 	"github.com/julienschmidt/httprouter"
 )
 
