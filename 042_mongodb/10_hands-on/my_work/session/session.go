@@ -1,4 +1,4 @@
-package sessions
+package session
 
 import (
 	"fmt"
@@ -32,7 +32,7 @@ func getUser(w http.ResponseWriter, req *http.Request) models.User {
 	// if the user exists already, get user
 	var u models.User
 	if s, ok := Sessions[c.Value]; ok {
-		s.lastActivity = time.Now()
+		s.LastActivity = time.Now()
 		Sessions[c.Value] = s
 		u = Users[s.un]
 	}
@@ -46,7 +46,7 @@ func alreadyLoggedIn(w http.ResponseWriter, req *http.Request) bool {
 	}
 	s, ok := Sessions[c.Value]
 	if ok {
-		s.lastActivity = time.Now()
+		s.LastActivity = time.Now()
 		Sessions[c.Value] = s
 	}
 	_, ok = Users[s.un]
