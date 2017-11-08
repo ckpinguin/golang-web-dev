@@ -5,21 +5,16 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/ckpinguin/golang-web-dev/042_mongodb/10_hands-on/my_work/models"
+	"github.com/ckpinguin/golang-web-dev/042_mongodb/02_json/sessions"
 	"github.com/satori/go.uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
 var tpl *template.Template
-var dbUsers = map[string]models.User{}       // user ID, user
-var dbSessions = map[string]models.Session{} // session ID, session
-var dbSessionsCleaned time.Time
-
-const sessionLength int = 30
 
 func init() {
 	tpl = template.Must(template.ParseGlob("templates/*"))
-	dbSessionsCleaned = time.Now()
+	sessions.LastCleaned = time.Now()
 }
 
 func main() {

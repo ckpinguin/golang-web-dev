@@ -5,9 +5,15 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/ckpinguin/golang-web-dev/042_mongodb/10_hands-on/my_work/models"
+	"github.com/ckpinguin/golang-web-dev/042_mongodb/02_json/models"
 	"github.com/satori/go.uuid"
 )
+
+const Length int = 30
+
+var Users = map[string]models.User{}       // user ID, user
+var Sessions = map[string]models.Session{} // session ID, session
+var LastCleaned time.Time
 
 func getUser(w http.ResponseWriter, req *http.Request) models.User {
 	// get cookie
@@ -20,15 +26,15 @@ func getUser(w http.ResponseWriter, req *http.Request) models.User {
 		}
 
 	}
-	c.MaxAge = sessionLength
+	c.MaxAge = Length
 	http.SetCookie(w, c)
 
 	// if the user exists already, get user
-	var u user
-	if s, ok := dbSessions[c.Value]; ok {
+	var u models.User
+	if s, ok := Sessions[c.Value]; ok {
 		s.lastActivity = time.Now()
-		dbSessions[c.Value] = s
-		u = dbUsers[s.un]
+		Sessions[c.Value] = s
+		u = Users[s.un]
 	}
 	return u
 }
@@ -38,14 +44,14 @@ func alreadyLoggedIn(w http.ResponseWriter, req *http.Request) bool {
 	if err != nil {
 		return false
 	}
-	s, ok := dbSessions[c.Value]
+	s, ok := Sessions[c.Value]
 	if ok {
 		s.lastActivity = time.Now()
-		dbSessions[c.Value] = s
+		Sessions[c.Value] = s
 	}
-	_, ok = dbUsers[s.un]
+	_, ok = Users[s.un]
 	// refresh session
-	c.MaxAge = sessionLength
+	c.MaxAge = Length
 	http.SetCookie(w, c)
 	return ok
 }
@@ -53,12 +59,12 @@ func alreadyLoggedIn(w http.ResponseWriter, req *http.Request) bool {
 func cleanSessions() {
 	fmt.Println("BEFORE CLEAN") // for demonstration purposes
 	showSessions()              // for demonstration purposes
-	for k, v := range dbSessions {
+	for k, v := range Sessions {
 		if time.Now().Sub(v.lastActivity) > (time.Second * 30) {
-			delete(dbSessions, k)
+			delete(Sessions, k)
 		}
 	}
-	dbSessionsCleaned = time.Now()
+	SessionsCleaned = time.Now()
 	fmt.Println("AFTER CLEAN") // for demonstration purposes
 	showSessions()             // for demonstration purposes
 }
@@ -66,7 +72,7 @@ func cleanSessions() {
 // for demonstration purposes
 func showSessions() {
 	fmt.Println("********")
-	for k, v := range dbSessions {
+	for k, v := range Sessions {
 		fmt.Println(k, v.un)
 	}
 	fmt.Println("")
