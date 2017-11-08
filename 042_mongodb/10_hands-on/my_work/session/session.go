@@ -56,9 +56,9 @@ func alreadyLoggedIn(w http.ResponseWriter, req *http.Request) bool {
 	return ok
 }
 
-func cleanSessions() {
+func CleanSessions() {
 	fmt.Println("BEFORE CLEAN") // for demonstration purposes
-	showSessions()              // for demonstration purposes
+	ShowSessions()              // for demonstration purposes
 	for k, v := range Sessions {
 		if time.Now().Sub(v.LastActivity) > (time.Second * 30) {
 			delete(Sessions, k)
@@ -66,11 +66,11 @@ func cleanSessions() {
 	}
 	LastCleaned = time.Now()
 	fmt.Println("AFTER CLEAN") // for demonstration purposes
-	showSessions()             // for demonstration purposes
+	ShowSessions()             // for demonstration purposes
 }
 
 // for demonstration purposes
-func showSessions() {
+func ShowSessions() {
 	fmt.Println("********")
 	for k, v := range Sessions {
 		fmt.Println(k, v.Un)
