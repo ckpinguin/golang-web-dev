@@ -5,10 +5,11 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/ckpinguin/golang-web-dev/042_mongodb/10_hands-on/my_work/models"
 	"github.com/satori/go.uuid"
 )
 
-func getUser(w http.ResponseWriter, req *http.Request) user {
+func getUser(w http.ResponseWriter, req *http.Request) models.user {
 	// get cookie
 	c, err := req.Cookie("session")
 	if err != nil {

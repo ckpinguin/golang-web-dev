@@ -1,29 +1,18 @@
 package main
 
 import (
-	"github.com/satori/go.uuid"
-	"golang.org/x/crypto/bcrypt"
 	"html/template"
 	"net/http"
 	"time"
+
+	"github.com/ckpinguin/golang-web-dev/042_mongodb/10_hands-on/my_work/models"
+	"github.com/satori/go.uuid"
+	"golang.org/x/crypto/bcrypt"
 )
 
-type user struct {
-	UserName string
-	Password []byte
-	First    string
-	Last     string
-	Role     string
-}
-
-type session struct {
-	un           string
-	lastActivity time.Time
-}
-
 var tpl *template.Template
-var dbUsers = map[string]user{}       // user ID, user
-var dbSessions = map[string]session{} // session ID, session
+var dbUsers = map[string]models.user{}       // user ID, user
+var dbSessions = map[string]models.session{} // session ID, session
 var dbSessionsCleaned time.Time
 
 const sessionLength int = 30
