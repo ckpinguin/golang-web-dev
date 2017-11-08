@@ -2,7 +2,7 @@ package models
 
 import "time"
 
-type session struct {
+type Session struct {
 	un           string
 	lastActivity time.Time
 }

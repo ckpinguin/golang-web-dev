@@ -11,8 +11,8 @@ import (
 )
 
 var tpl *template.Template
-var dbUsers = map[string]models.user{}       // user ID, user
-var dbSessions = map[string]models.session{} // session ID, session
+var dbUsers = map[string]models.User{}       // user ID, user
+var dbSessions = map[string]models.Session{} // session ID, session
 var dbSessionsCleaned time.Time
 
 const sessionLength int = 30

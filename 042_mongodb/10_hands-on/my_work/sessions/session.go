@@ -1,4 +1,4 @@
-package main
+package sessions
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 	"github.com/satori/go.uuid"
 )
 
-func getUser(w http.ResponseWriter, req *http.Request) models.user {
+func getUser(w http.ResponseWriter, req *http.Request) models.User {
 	// get cookie
 	c, err := req.Cookie("session")
 	if err != nil {
