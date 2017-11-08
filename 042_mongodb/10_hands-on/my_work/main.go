@@ -5,7 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/ckpinguin/golang-web-dev/042_mongodb/02_json/sessions"
+	"github.com/ckpinguin/golang-web-dev/042_mongodb/10_hands-on/my_work/models"
+	"github.com/ckpinguin/golang-web-dev/042_mongodb/10_hands-on/my_work/session/session"
 	"github.com/satori/go.uuid"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -74,7 +75,7 @@ func signup(w http.ResponseWriter, req *http.Request) {
 		}
 		c.MaxAge = sessionLength
 		http.SetCookie(w, c)
-		dbSessions[c.Value] = session{un, time.Now()}
+		sessions.Sessions[c.Value] = session{un, time.Now()}
 		// store user in dbUsers
 		bs, err := bcrypt.GenerateFromPassword([]byte(p), bcrypt.MinCost)
 		if err != nil {
@@ -121,7 +122,7 @@ func login(w http.ResponseWriter, req *http.Request) {
 		}
 		c.MaxAge = sessionLength
 		http.SetCookie(w, c)
-		dbSessions[c.Value] = session{un, time.Now()}
+		sessions.[c.Value] = session{un, time.Now()}
 		http.Redirect(w, req, "/", http.StatusSeeOther)
 		return
 	}
@@ -136,7 +137,7 @@ func logout(w http.ResponseWriter, req *http.Request) {
 	}
 	c, _ := req.Cookie("session")
 	// delete the session
-	delete(dbSessions, c.Value)
+	delete(sessions.Sessions, c.Value)
 	// remove the cookie
 	c = &http.Cookie{
 		Name:   "session",
@@ -146,7 +147,7 @@ func logout(w http.ResponseWriter, req *http.Request) {
 	http.SetCookie(w, c)
 
 	// clean up dbSessions
-	if time.Now().Sub(dbSessionsCleaned) > (time.Second * 30) {
+	if time.Now().Sub(sessions.LastCleaned) > (time.Second * 30) {
 		go cleanSessions()
 	}
 
