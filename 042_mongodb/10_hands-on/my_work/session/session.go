@@ -15,7 +15,7 @@ var Users = map[string]models.User{}       // user ID, user
 var Sessions = map[string]models.Session{} // session ID, session
 var LastCleaned time.Time
 
-func getUser(w http.ResponseWriter, req *http.Request) models.User {
+func GetUser(w http.ResponseWriter, req *http.Request) models.User {
 	// get cookie
 	c, err := req.Cookie("session")
 	if err != nil {
@@ -39,7 +39,7 @@ func getUser(w http.ResponseWriter, req *http.Request) models.User {
 	return u
 }
 
-func alreadyLoggedIn(w http.ResponseWriter, req *http.Request) bool {
+func AlreadyLoggedIn(w http.ResponseWriter, req *http.Request) bool {
 	c, err := req.Cookie("session")
 	if err != nil {
 		return false
