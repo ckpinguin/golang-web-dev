@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/ckpinguin/golang-web-dev/042_mongodb/10_hands-on/my_work/models"
+	"../models"
 	"github.com/satori/go.uuid"
 )
 

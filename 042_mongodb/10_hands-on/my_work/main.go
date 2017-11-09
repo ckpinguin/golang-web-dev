@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/ckpinguin/golang-web-dev/042_mongodb/10_hands-on/my_work/models"
-	"github.com/ckpinguin/golang-web-dev/042_mongodb/10_hands-on/my_work/session"
+	"./models"
+	"./session"
 	"github.com/satori/go.uuid"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -15,7 +15,7 @@ var tpl *template.Template
 
 func init() {
 	tpl = template.Must(template.ParseGlob("templates/*"))
-	sessions.LastCleaned = time.Now()
+	session.LastCleaned = time.Now()
 }
 
 func main() {
