@@ -2,7 +2,7 @@ package books
 
 import (
 	"errors"
-	"github.com/GoesToEleven/golang-web-dev/046_mongodb/15_postgres/config"
+	"github.com/ckpinguin/golang-web-dev/046_mongodb/15_postgres/config"
 	"net/http"
 	"strconv"
 )
