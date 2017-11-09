@@ -3,6 +3,7 @@ package books
 import (
 	"database/sql"
 	"encoding/json"
+	"html/template"
 	"net/http"
 
 	"github.com/ckpinguin/golang-web-dev/046_mongodb/15_postgres/config"
@@ -128,5 +129,5 @@ func ShowJSON(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	config.TPL.ExecuteTemplate(w, "json.gohtml", string(bs))
+	config.TPL.ExecuteTemplate(w, "json.gohtml", template.HTML(string(bs)))
 }
